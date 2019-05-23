@@ -1,3 +1,7 @@
+/*
+Sanil Apte, Sean Driscoll
+ */
+
 package com.example.geocalcdroid;
 
 import android.content.Intent;
