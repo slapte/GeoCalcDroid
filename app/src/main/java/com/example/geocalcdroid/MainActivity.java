@@ -3,6 +3,8 @@ package com.example.geocalcdroid;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.EditText;
@@ -10,6 +12,7 @@ import android.location.Location;
 import android.view.inputmethod.InputMethodManager;
 import android.view.View;
 import android.content.Context;
+import android.widget.Toolbar;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -34,10 +37,10 @@ public class MainActivity extends AppCompatActivity {
 
         Button clr = (Button) findViewById(R.id.clear);
         Button calc = (Button) findViewById(R.id.calc);
-        Button settings = (Button) findViewById(R.id.btnSettings);
 
         dist = (TextView) findViewById(R.id.distText);
         bearing = (TextView) findViewById(R.id.bearingText);
+        Toolbar toolbar = findViewById(R.id.toolbar);
 
 
 
@@ -46,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
             latP2.setText("");
             longP1.setText("");
             longP2.setText("");
+            dist.setText("Distance: ");
+            bearing.setText("Bearing: ");
 
             View view = this.getCurrentFocus();
             if (view != null) {
@@ -83,15 +88,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        settings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, settingsActvity.class);
-                startActivityForResult(intent, unitsSelection);
-            }
-        });
-
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
@@ -101,6 +99,22 @@ public class MainActivity extends AppCompatActivity {
             calcUnits();
 
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.main_menu,menu);
+        return true;
+    }
+
+    @Override
+    public  boolean onOptionsItemSelected(MenuItem item){
+        if(item.getItemId() == R.id.settingsItem){
+            Intent intent = new Intent(MainActivity.this, settingsActvity.class);
+            startActivityForResult(intent, unitsSelection);
+            return true;
+        }
+        return false;
     }
 
     protected void calcUnits(){

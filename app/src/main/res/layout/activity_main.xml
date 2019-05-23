@@ -11,7 +11,7 @@
         android:layout_width="130dp"
         android:layout_height="76dp"
         android:layout_marginStart="50dp"
-        android:layout_marginTop="44dp"
+        android:layout_marginTop="80dp"
         android:ems="10"
         android:hint="Latitiude P2"
         android:inputType="numberDecimal|numberSigned"
@@ -22,8 +22,8 @@
         android:id="@+id/lat1"
         android:layout_width="130dp"
         android:layout_height="76dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="44dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="80dp"
         android:ems="10"
         android:hint="Latitiude P1"
         android:inputType="numberDecimal|numberSigned"
@@ -93,15 +93,5 @@
         android:text="Bearing"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/distText" />
-
-    <Button
-        android:id="@+id/btnSettings"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="151dp"
-        android:layout_marginTop="224dp"
-        android:text="Settings"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/clear" />
 
 </android.support.constraint.ConstraintLayout>
