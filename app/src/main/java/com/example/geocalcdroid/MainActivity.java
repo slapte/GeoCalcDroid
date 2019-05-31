@@ -18,26 +18,37 @@ import android.view.View;
 import android.content.Context;
 import android.widget.Toolbar;
 
+import com.example.geocalcdroid.dummy.HistoryContent;
+
+import org.joda.time.DateTime;
+
 
 public class MainActivity extends AppCompatActivity {
 
     public static final int unitsSelection = 1;
+    public static int HISTORY_RESULT = 2;
     public static String distUnits = "Kilometers";
     public static String bearUnits = "Degrees";
     private float distanceBetween;
     private float bearingTo;
     private TextView dist;
     private TextView bearing;
+    private EditText latP1;
+    private EditText latP2;
+    private EditText longP1;
+    private EditText longP2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        EditText latP1 = (EditText) findViewById(R.id.lat1);
-        EditText latP2 = (EditText) findViewById(R.id.lat2);
-        EditText longP1 = (EditText) findViewById(R.id.long1);
-        EditText longP2 = (EditText) findViewById(R.id.long2);
+        latP1 = (EditText) findViewById(R.id.lat1);
+        latP2 = (EditText) findViewById(R.id.lat2);
+        longP1 = (EditText) findViewById(R.id.long1);
+        longP2 = (EditText) findViewById(R.id.long2);
+
+
 
         Button clr = (Button) findViewById(R.id.clear);
         Button calc = (Button) findViewById(R.id.calc);
@@ -64,25 +75,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         calc.setOnClickListener(v -> {
-            Location p1 = new Location("");
-            p1.setLatitude(Double.parseDouble(latP1.getText().toString()));
-            p1.setLongitude(Double.parseDouble(longP1.getText().toString()));
-            Location p2 = new Location("");
-            p2.setLatitude(Double.parseDouble(latP2.getText().toString()));
-            p2.setLongitude(Double.parseDouble(longP2.getText().toString()));
-
-
-            float distance = p1.distanceTo(p2);
-            distance = distance / 1000;
-            distance = Math.round(distance  * (float) 100.0) / (float) 100.0;
-            float bear = p1.bearingTo(p2);
-            bear = Math.round(bear  * (float) 100.0) / (float) 100.0;
-
-            distanceBetween = distance;
-            bearingTo = bear;
-
-
-            calcUnits();
+            doCalc();
 
 
             View view = this.getCurrentFocus();
@@ -94,6 +87,37 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private void doCalc() {
+        if(latP1.getText().toString().equals("") || latP2.getText().toString().equals("") || longP1.getText().toString().equals("") || longP2.getText().toString().equals("")){
+
+        }else {
+            Location p1 = new Location("");
+            p1.setLatitude(Double.parseDouble(latP1.getText().toString()));
+            p1.setLongitude(Double.parseDouble(longP1.getText().toString()));
+            Location p2 = new Location("");
+            p2.setLatitude(Double.parseDouble(latP2.getText().toString()));
+            p2.setLongitude(Double.parseDouble(longP2.getText().toString()));
+
+
+            float distance = p1.distanceTo(p2);
+            distance = distance / 1000;
+            distance = Math.round(distance * (float) 100.0) / (float) 100.0;
+            float bear = p1.bearingTo(p2);
+            bear = Math.round(bear * (float) 100.0) / (float) 100.0;
+
+            distanceBetween = distance;
+            bearingTo = bear;
+
+
+            calcUnits();
+
+            //Remembers the history
+            HistoryContent.HistoryItem item = new HistoryContent.HistoryItem(latP1.getText().toString(),
+                    longP1.getText().toString(), latP2.getText().toString(), longP2.getText().toString(), DateTime.now());
+            HistoryContent.addItem(item);
+        }
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
@@ -101,8 +125,15 @@ public class MainActivity extends AppCompatActivity {
             distUnits = data.getStringExtra("dist");
             bearUnits = data.getStringExtra("bear");
             calcUnits();
-
+        }else if (resultCode == HISTORY_RESULT) {
+            String[] vals = data.getStringArrayExtra("item");
+            this.latP1.setText(vals[0]);
+            this.longP1.setText(vals[1]);
+            this.latP2.setText(vals[2]);
+            this.longP2.setText(vals[3]);
+            doCalc();  // code that updates the calcs.
         }
+
     }
 
     @Override
@@ -117,7 +148,12 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, settingsActvity.class);
             startActivityForResult(intent, unitsSelection);
             return true;
+        }else if(item.getItemId() == R.id.action_history) {
+            Intent intent = new Intent(MainActivity.this, HistoryActivity.class);
+            startActivityForResult(intent, HISTORY_RESULT );
+            return true;
         }
+
         return false;
     }
 

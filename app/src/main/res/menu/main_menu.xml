@@ -6,4 +6,8 @@
         android:id="@+id/settingsItem"
         android:title="Settings"
         android:visible="true" />
+    <item android:title="History"
+        android:id="@+id/action_history"
+        app:showAsAction="never" />
+
 </menu>

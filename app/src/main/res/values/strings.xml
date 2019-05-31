@@ -2,12 +2,13 @@
     <string name="app_name">GeoCalcDroid</string>
     <string name="title_activity_settings_screen">SettingsScreen</string>
     <string name="title_activity_settings_actvity">settingsActvity</string>
-    <string-array name = "distUnits">
+    <string-array name="distUnits">
         <item>Kilometers</item>
         <item>Miles</item>
     </string-array>
-    <string-array name = "bearUnits">
+    <string-array name="bearUnits">
         <item>Degrees</item>
         <item>Mils</item>
     </string-array>
+    <string name="title_activity_history">HistoryActivity</string>
 </resources>
