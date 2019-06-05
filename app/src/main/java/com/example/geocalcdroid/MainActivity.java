@@ -19,6 +19,7 @@ import android.content.Context;
 import android.widget.Toolbar;
 
 import com.example.geocalcdroid.dummy.HistoryContent;
+import com.google.android.libraries.places.api.Places;
 
 import org.joda.time.DateTime;
 
@@ -37,16 +38,20 @@ public class MainActivity extends AppCompatActivity {
     private EditText latP2;
     private EditText longP1;
     private EditText longP2;
+    private final static int NEW_LOC = 146;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Places.initialize(getApplicationContext(), "A key");
 
         latP1 = (EditText) findViewById(R.id.lat1);
         latP2 = (EditText) findViewById(R.id.lat2);
         longP1 = (EditText) findViewById(R.id.long1);
         longP2 = (EditText) findViewById(R.id.long2);
+        Button searchBtn = (Button) findViewById(R.id.searchButton);
+
 
 
 
@@ -83,6 +88,11 @@ public class MainActivity extends AppCompatActivity {
                 InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
             }
+        });
+
+        searchBtn.setOnClickListener(v -> {
+            Intent newLoc = new Intent(MainActivity.this,newLocActivity.class);
+            startActivityForResult(newLoc, NEW_LOC);
         });
 
     }
@@ -132,6 +142,8 @@ public class MainActivity extends AppCompatActivity {
             this.latP2.setText(vals[2]);
             this.longP2.setText(vals[3]);
             doCalc();  // code that updates the calcs.
+        }else if(resultCode == NEW_LOC) {
+            //nothing
         }
 
     }

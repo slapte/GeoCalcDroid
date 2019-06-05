@@ -11,4 +11,12 @@
         <item>Mils</item>
     </string-array>
     <string name="title_activity_history">HistoryActivity</string>
+    <string name="title_activity_location">locationActivity</string>
+    <string name="title_activity_new_loc">New Location</string>
+    <string name="locInfo">Location Information</string>
+    <string name="sLoc">Start Location</string>
+    <string name="eLoc">End Location</string>
+    <string name="dtInfo">Date Information</string>
+    <string name="date">Date</string>
+
 </resources>

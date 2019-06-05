@@ -34,5 +34,9 @@ dependencies {
     implementation 'com.android.support:recyclerview-v7:28.0.0'
     implementation 'net.danlew:android.joda:2.9.5'
     implementation 'com.truizlop.sectionedrecyclerview:library:1.2.0'
-
+    implementation 'com.jakewharton:butterknife:8.4.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
+    implementation 'com.google.android.libraries.places:places:1.1.0'
+    implementation 'org.parceler:parceler-api:1.1.9'
+    annotationProcessor 'org.parceler:parceler:1.1.9'
 }
