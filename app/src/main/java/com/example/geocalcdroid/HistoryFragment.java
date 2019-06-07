@@ -10,8 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.geocalcdroid.dummy.HistoryContent;
-import com.example.geocalcdroid.dummy.HistoryContent.HistoryItem;
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * A fragment representing a list of Items.
@@ -26,12 +27,15 @@ public class HistoryFragment extends Fragment {
     // TODO: Customize parameters
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
+    private List<LocationLookup> allHistory;
+    private HistoryAdapter adapter;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
     public HistoryFragment() {
+        allHistory = new ArrayList<LocationLookup>();
     }
 
     // TODO: Customize parameter initialization
@@ -59,15 +63,18 @@ public class HistoryFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_history_list, container, false);
 
         // Set the adapter
+
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
+
             if (mColumnCount <= 1) {
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new HistoryAdapter(HistoryContent.ITEMS, mListener));
+            adapter = new HistoryAdapter(allHistory, mListener);
+            recyclerView.setAdapter(adapter);
         }
         return view;
     }
@@ -102,6 +109,7 @@ public class HistoryFragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(HistoryItem item);
+        void onListFragmentInteraction(LocationLookup item);
     }
+
 }

@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.geocalcdroid.HistoryFragment.OnListFragmentInteractionListener;
-import com.example.geocalcdroid.dummy.HistoryContent.HistoryItem;
 import com.truizlop.sectionedrecyclerview.SectionedRecyclerViewAdapter;
 
 
@@ -23,7 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link HistoryItem} and makes a call to the
+ * {@link RecyclerView.Adapter} that can display a {} and makes a call to the
  * specified {@link OnListFragmentInteractionListener}.
  * TODO: Replace the implementation with code for your data type.
  */
@@ -34,20 +33,20 @@ public class HistoryAdapter extends
  {
 
      private final OnListFragmentInteractionListener mListener;
-     private final HashMap<String,List<HistoryItem>> dayValues;
+     private final HashMap<String,List<LocationLookup>> dayValues;
      private final List<String> sectionHeaders;
 
-     public HistoryAdapter(List<HistoryItem> items, OnListFragmentInteractionListener listener) {
+     public HistoryAdapter(List<LocationLookup> items, OnListFragmentInteractionListener listener) {
          //mValues = items;
-         this.dayValues = new HashMap<String,List<HistoryItem>>();
+         this.dayValues = new HashMap<String,List<LocationLookup>>();
          this.sectionHeaders = new ArrayList<String>();
          DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyy-MM-dd");
 
-         for (HistoryItem hi : items) {
-             String key = "Entries for " + fmt.print(hi.timestamp);
-             List<HistoryItem> list = this.dayValues.get(key);
+         for (LocationLookup hi : items) {
+             String key = "Entries for " + fmt.print(hi.timeStamp);
+             List<LocationLookup> list = this.dayValues.get(key);
              if (list == null) {
-                 list = new ArrayList<HistoryItem>();
+                 list = new ArrayList<LocationLookup>();
                  this.dayValues.put(key, list);
                  this.sectionHeaders.add(key);
              }
@@ -80,7 +79,7 @@ public class HistoryAdapter extends
         public final TextView mP1;
         public final TextView mP2;
         public final TextView mDateTime;
-        public HistoryItem mItem;
+        public LocationLookup mItem;
 
         public ViewHolder(View view) {
             super(view);
@@ -145,8 +144,8 @@ public class HistoryAdapter extends
      protected void onBindItemViewHolder(ViewHolder holder, int section, int position) {
          holder.mItem = this.dayValues.get(this.sectionHeaders.get(section)).get(position);
          holder.mP1.setText("(" + holder.mItem.origLat + "," + holder.mItem.origLng + ")");
-         holder.mP2.setText("(" + holder.mItem.destLat + "," + holder.mItem.destLng + ")");
-         holder.mDateTime.setText(holder.mItem.timestamp.toString());
+         holder.mP2.setText("(" + holder.mItem.endLat + "," + holder.mItem.endLng + ")");
+         holder.mDateTime.setText(holder.mItem.timeStamp.toString());
 
          holder.mView.setOnClickListener(new View.OnClickListener() {
              @Override

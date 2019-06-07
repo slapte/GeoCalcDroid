@@ -3,20 +3,23 @@ package com.example.geocalcdroid;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
+import android.util.Log;
+import android.widget.DatePicker;
 import android.widget.TextView;
 
+import com.google.android.gms.common.api.Status;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 
 import org.joda.time.DateTime;
-import org.w3c.dom.Text;
+import org.parceler.Parcels;
 
 import java.util.Arrays;
 import java.util.List;
@@ -28,18 +31,20 @@ import butterknife.OnClick;
 
 
 
-public class newLocActivity extends AppCompatActivity /*implements DatePickerDialog.OnDateSetListener*/ {
+public class newLocActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
 
     @BindView(R.id.date) TextView datePick;
     @BindView(R.id.endlocation) TextView endLocation;
     @BindView(R.id.startlocation) TextView startLocation;
+    private static final String TAG = "NewLocation";
 
-    int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
+    int PLACE_START_CODE = 1;
+    int PLACE_END_CODE = 2;
     private DateTime date;
     private DatePickerDialog dpDialog;
     private LocationLookup loc;
-    FloatingActionButton fab = findViewById(R.id.fab);
+    private FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,18 +55,31 @@ public class newLocActivity extends AppCompatActivity /*implements DatePickerDia
         ButterKnife.bind(this);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        fab = findViewById(R.id.fab);
 
-
+        loc = new LocationLookup();
     }
-    @OnClick({R.id.startlocation, R.id.endlocation})
+    @OnClick({R.id.startlocation})
     public void LocPressed(){
         List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.NAME,
                 Place.Field.LAT_LNG);
         Intent intent =
                 new Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields)
                         .build(this);
-        startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
+        startActivityForResult(intent, PLACE_START_CODE);
     }
+
+    @OnClick({R.id.endlocation})
+    public void LocEndPressed(){
+        List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.NAME,
+                Place.Field.LAT_LNG);
+        Intent intent =
+                new Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields)
+                        .build(this);
+        startActivityForResult(intent, PLACE_END_CODE);
+    }
+
+
 
     @OnClick({R.id.dateInfo})
     public void dateClicked(){
@@ -72,28 +90,57 @@ public class newLocActivity extends AppCompatActivity /*implements DatePickerDia
         return d.monthOfYear().getAsShortText(Locale.getDefault()) + " " +
                 d.getDayOfMonth() + ", " + d.getYear();
     }
-    /*
+
     @OnClick(R.id.fab)
     public void FABPressed() {
         Intent result = new Intent();
-        loc.origLat = jname.getText().toString();
-        DateTimeFormatter fmt = ISODateTimeFormat.dateTime();
-        currentTrip.startDate = fmt.print(startDate);
-        currentTrip.endDate = fmt.print(endDate);
-        // add more code to initialize the rest of the fields
-        Parcelable parcel = Parcels.wrap(currentTrip);
-        result.putExtra("TRIP", parcel);
-        setResult(RESULT_OK, result);
+        Parcelable parcel = Parcels.wrap(loc);
+        result.putExtra("LOC",parcel);
+        setResult(MainActivity.NEW_LOC, result);
         finish();
     }
-    */
-/*
+
     @Override
-    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth, int yearEnd, int monthOfYearEnd, int dayOfMonthEnd) {
-        date = new DateTime(year, monthOfYear + 1, dayOfMonth, 0, 0);
-        datePick.setText(formatted(date));
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == PLACE_START_CODE) {
+            if (resultCode == RESULT_OK) {
+                Place pl = Autocomplete.getPlaceFromIntent(data);
+                startLocation.setText(pl.getName());
+                loc.origLat = pl.getLatLng().latitude;
+                loc.origLng = pl.getLatLng().longitude;
 
+                Log.i(TAG, "onActivityResult: " + pl.getName() + "/" + pl.getAddress());
+
+            } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
+                Status stat = Autocomplete.getStatusFromIntent(data);
+                Log.d(TAG, "onActivityResult: ");
+            } else if (requestCode == RESULT_CANCELED) {
+                System.out.println("Cancelled by the user");
+            }
+        } else if (requestCode == PLACE_END_CODE) {
+            if (resultCode == RESULT_OK) {
+                Place pl = Autocomplete.getPlaceFromIntent(data);
+                endLocation.setText(pl.getName());
+                loc.endLat = pl.getLatLng().latitude;
+                loc.endLng = pl.getLatLng().longitude;
+
+                Log.i(TAG, "onActivityResult: " + pl.getName() + "/" + pl.getAddress());
+
+            } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
+                Status stat = Autocomplete.getStatusFromIntent(data);
+                Log.d(TAG, "onActivityResult: ");
+            } else if (requestCode == RESULT_CANCELED) {
+                System.out.println("Cancelled by the user");
+            }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
     }
-    */
 
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        date = new DateTime(year, month, dayOfMonth, 0, 0);
+        datePick.setText(formatted(date));
+    }
 }
