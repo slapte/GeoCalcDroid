@@ -145,7 +145,7 @@ public class HistoryAdapter extends
          holder.mItem = this.dayValues.get(this.sectionHeaders.get(section)).get(position);
          holder.mP1.setText("(" + holder.mItem.origLat + "," + holder.mItem.origLng + ")");
          holder.mP2.setText("(" + holder.mItem.endLat + "," + holder.mItem.endLng + ")");
-         holder.mDateTime.setText(holder.mItem.timeStamp.toString());
+         //holder.mDateTime.setText(holder.mItem.timeStamp.toString());
 
          holder.mView.setOnClickListener(new View.OnClickListener() {
              @Override

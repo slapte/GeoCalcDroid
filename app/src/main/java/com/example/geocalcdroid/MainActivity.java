@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Places.initialize(getApplicationContext(), "");
+        Places.initialize(getApplicationContext(), "a key");
 
         latP1 = (EditText) findViewById(R.id.lat1);
         latP2 = (EditText) findViewById(R.id.lat2);
@@ -139,7 +139,6 @@ public class MainActivity extends AppCompatActivity {
             entry.setOrigLng(Double.parseDouble(longP1.getText().toString()));
             entry.setEndLat(Double.parseDouble(latP2.getText().toString()));
             entry.setEndLng(Double.parseDouble(longP2.getText().toString()));
-            DateTimeFormatter fmt = ISODateTimeFormat.dateTime();
             entry.setTimeStamp(null);
             topRef.push().setValue(entry);
 
@@ -236,6 +235,7 @@ public class MainActivity extends AppCompatActivity {
             LocationLookup entry = (LocationLookup) dataSnapshot.getValue(LocationLookup.class);
             entry._key = dataSnapshot.getKey();
             allHistory.add(entry);
+
         }
 
         @Override

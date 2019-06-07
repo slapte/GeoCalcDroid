@@ -9,6 +9,7 @@ public class LocationLookup {
         double endLat;
         double endLng;
 
+
         public DateTime getTimeStamp() {
                 return timeStamp;
         }

@@ -35,7 +35,7 @@ public class HistoryFragment extends Fragment {
      * fragment (e.g. upon screen orientation changes).
      */
     public HistoryFragment() {
-        allHistory = new ArrayList<LocationLookup>();
+        allHistory = MainActivity.allHistory;
     }
 
     // TODO: Customize parameter initialization
