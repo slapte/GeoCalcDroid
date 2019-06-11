@@ -33,6 +33,7 @@ import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -57,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Places.initialize(getApplicationContext(), "a key");
+        Places.initialize(getApplicationContext(), "AIzaSyBg7vY9zQVfbZMmN2F04-AJkv85gxW7Udo");
 
         latP1 = (EditText) findViewById(R.id.lat1);
         latP2 = (EditText) findViewById(R.id.lat2);
@@ -143,6 +144,11 @@ public class MainActivity extends AppCompatActivity {
             topRef.push().setValue(entry);
 
         }
+    }
+
+    private String formatted(DateTime d) {
+        return d.monthOfYear().getAsShortText(Locale.getDefault()) + " " +
+                d.getDayOfMonth() + ", " + d.getYear();
     }
 
 

@@ -58,7 +58,14 @@ public class newLocActivity extends AppCompatActivity implements DatePickerDialo
         fab = findViewById(R.id.fab);
 
         loc = new LocationLookup();
+
+        DateTime today = DateTime.now();
+        dpDialog = new DatePickerDialog(this);
+        dpDialog.updateDate(today.getYear(),today.getMonthOfYear()-1, today.getDayOfMonth());
+
+        datePick.setText(formatted(today));
     }
+
     @OnClick({R.id.startlocation})
     public void LocPressed(){
         List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.NAME,
@@ -81,7 +88,7 @@ public class newLocActivity extends AppCompatActivity implements DatePickerDialo
 
 
 
-    @OnClick({R.id.dateInfo})
+    @OnClick({R.id.date})
     public void dateClicked(){
         dpDialog.show();
     }
@@ -138,7 +145,6 @@ public class newLocActivity extends AppCompatActivity implements DatePickerDialo
     }
 
 
-    @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
         date = new DateTime(year, month, dayOfMonth, 0, 0);
         datePick.setText(formatted(date));
