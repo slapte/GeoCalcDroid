@@ -27,8 +27,7 @@ public class WeatherService extends IntentService {
     private static final String TAG = "WeatherService";
         // IntentService can perform, e.g. ACTION_FETCH_NEW_ITEMS
     private static final String ACTION_WEATHER_AT = "com.example.geocalcdroid.webservice.action.WEATHER_AT";
-    private static final String BASE_URL = "https://api.darksky.net/forecast/8e9705120587ef26b56489a41d2e2471";
-    //private static final String BASE_URL = "https://api.darksky.net/forecast/YOUR-DARK-SKY-API-KEY-GOES-HERE";
+    private static final String BASE_URL = "https://api.darksky.net/forecast/YOUR-DARK-SKY-API-KEY-GOES-HERE";
     public static final String BROADCAST_WEATHER = "com.example.geocalcdroid.webservice.action.BROADCAST";
     private static final String EXTRA_KEY = "com.example.geocalcdroid.webservice.extra.KEY";
     private static final String EXTRA_LAT = "com.example.geocalcdroid.webservice.extra.LAT";

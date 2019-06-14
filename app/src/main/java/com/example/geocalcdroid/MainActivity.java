@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Places.initialize(getApplicationContext(), "AIzaSyBg7vY9zQVfbZMmN2F04-AJkv85gxW7Udo");
+        Places.initialize(getApplicationContext(), "Google places key here or else...     app breaks");
 
         latP1 = (EditText) findViewById(R.id.lat1);
         latP2 = (EditText) findViewById(R.id.lat2);
